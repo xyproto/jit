@@ -34,6 +34,10 @@ func main() {
 		verbose = false
 	}
 
+	if filename == "-" {
+		filename = os.Stdin.Name()
+	}
+
 	// Read the source file
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
