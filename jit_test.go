@@ -13,7 +13,7 @@ b8 00
 00 c3
 `
 
-	code, err := hexstring.StringToBytes(program)
+	code, err := hexstring.StringToBytes(machineCodeProgram)
 	if err != nil {
 		t.Fatal(err)
 	}
