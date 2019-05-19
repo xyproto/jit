@@ -38,7 +38,7 @@ It can also be run silently/non-verbosely with the `-s` flag:
 
 ## Dependencies
 
-The only dependencies are `cgo` and the [`hexstring`](https://github.com/xyproto/hexstring) module.
+The only dependencies are `cgo` (for the `jit` package) and the [`hexstring`](https://github.com/xyproto/hexstring) module (only for the `jitrun` command).
 
 ## General info
 
