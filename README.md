@@ -30,7 +30,19 @@ Example use of `jitrun`:
 
     The program returned: 42
 
-It can also be run silently/non-verbosely with the `-s` flag:
+Alternatively, provide a file, and run it:
+
+*`42.mc`*:
+
+```
+b8 2a   // mov 2a into the ax register. b8 is the "mov ax" part. 2a is the value.
+00 00
+00 c3   // return the value in ax
+```
+
+    ./jitrun 42.mc
+
+`jitrun` can also be run silently by using the `-s` flag:
 
     $ echo 'b8 2a 00 00 00 c3' | jitrun -s -
     $ echo $?
