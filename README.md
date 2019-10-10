@@ -15,20 +15,22 @@ jit.Execute(code)
 
 `jit` includes a small machine code execution program nameed `jitrun` that can be installed with:
 
-```bash
+```sh
 go get -u github.com/xyproto/jit/cmd/jitrun
 ```
 
 Example use of `jitrun`:
 
-    $ echo 'b8 2a 00 00 00 c3' | jitrun -
-    Stripped source code:
-    b8 2a 00 00 00 c3
+``sh
+$ echo 'b8 2a 00 00 00 c3' | jitrun -
+Stripped source code:
+b8 2a 00 00 00 c3
 
-    Source bytes:
-    [184 42 0 0 0 195]
+Source bytes:
+[184 42 0 0 0 195]
 
-    The program returned: 42
+The program returned: 42
+```
 
 Alternatively, provide a file, and run it:
 
@@ -40,13 +42,17 @@ b8 2a   // mov 2a into the ax register. b8 is the "mov ax" part. 2a is the value
 00 c3   // return the value in ax
 ```
 
-    ./jitrun 42.mc
+```sh
+./jitrun 42.mc
+```
 
 `jitrun` can also be run silently by using the `-s` flag:
 
-    $ echo 'b8 2a 00 00 00 c3' | jitrun -s -
-    $ echo $?
-    42
+```sh
+$ echo 'b8 2a 00 00 00 c3' | jitrun -s -
+$ echo $?
+42
+```
 
 ## Dependencies
 
