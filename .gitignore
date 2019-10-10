@@ -12,3 +12,4 @@
 *.out
 
 cmd/jitrun/jitrun
+cmd/autocode/autocode
