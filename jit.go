@@ -9,27 +9,30 @@ package jit
 // #include <stdbool.h>
 // #include <errno.h>
 //
-// static int illegal = 0;
-// static int segfault = 0;
+// volatile static int illegal = 0;
+// volatile static int segfault = 0;
 //
 // void sighandler(int sig) {
 //   switch (sig) {
 //   case SIGILL:
 //     illegal = 1;
-//     fputs("Caught SIGILL: illegal instruction <3\n", stderr);
+//     //fputs("Caught SIGILL: illegal instruction\n", stderr);
 //     break;
 //   case SIGSEGV:
 //     segfault = 1;
-//     fputs("Caught SIGSEGV\n", stderr);
+//     //fputs("Caught SIGSEGV: segmentation fault\n", stderr);
 //     break;
 //   }
+// }
+//
+// void initSignalHandlers() {
+//   signal(SIGILL, sighandler);
+//   signal(SIGSEGV, sighandler);
 // }
 //
 // int run(void* mem) {
 //   illegal = 0;
 //   segfault = 0;
-//   signal(SIGILL, sighandler);
-//   signal(SIGSEGV, sighandler);
 //   int (*f)() = mem;
 //   return f();
 // }
@@ -72,6 +75,10 @@ func Execute(code []byte) (int, error) {
 
 	// Execute the code in memory, by using the C snippet at the top
 	return int(C.run(unsafe.Pointer(&executableArea[0]))), nil
+}
+
+func init() {
+	C.initSignalHandlers()
 }
 
 func GotSIGILL() bool {

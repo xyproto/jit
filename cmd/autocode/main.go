@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"github.com/xyproto/hexstring"
 	"github.com/xyproto/jit"
-	"log"
 	"math/rand"
-	//"os"
-	//"os/signal"
+	"os"
+	"os/signal"
 	"runtime/debug"
-	//"syscall"
+	"syscall"
 	"time"
 )
 
@@ -20,13 +19,13 @@ func findCode(codeLength, targetValue int) []byte {
 
 	// Set up a signal handler for illegal instructions (SIGILL)
 	// and for segfaults (SIGSEGV)
-	//sigChan := make(chan os.Signal, 1)
-	//signal.Notify(sigChan, syscall.SIGILL, syscall.SIGSEGV)
-	//go func() {
-	//	for range sigChan {
-	//		fmt.Println("Illegal instruction, or segfault.")
-	//	}
-	//}()
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGILL, syscall.SIGSEGV)
+	go func() {
+		for range sigChan {
+			fmt.Println("Illegal instruction, or segfault.")
+		}
+	}()
 
 	debug.SetPanicOnFault(true)
 
@@ -44,6 +43,15 @@ OUT:
 		// Create random code
 		rand.Read(code)
 
+		// Returns a value, but it's the wrong value
+		//code = []byte{0xb8, 0x20, 0x00, 0x00, 0x00, 0xc3}
+
+		// Returns the correct value
+		//code = []byte{0xb8, 0x2a, 0x00, 0x00, 0x00, 0xc3}
+
+		// Segfault in a way that is not recoverable
+		code = []byte{0x86, 0x21, 0x63, 0x25, 0x25, 0x3f}
+
 		fmt.Printf("Running code [%v] ...", hexstring.BytesToString(code))
 
 		retvalChan := make(chan int, 1)
@@ -51,7 +59,7 @@ OUT:
 		// Run the machine code in a goroutine
 		go func() {
 
-			debug.SetPanicOnFault(true)
+			//debug.SetPanicOnFault(true)
 
 			// Set up a panic handler
 			defer func() {
@@ -62,6 +70,11 @@ OUT:
 
 			// Run the code
 			retval, err := jit.Execute(code)
+			if jit.GotSIGILL() || jit.GotSIGSEGV() {
+				fmt.Println("CODE FAILED")
+				retvalChan <- -1
+				return
+			}
 			if err != nil {
 				retvalChan <- -1
 			} else {
@@ -73,13 +86,13 @@ OUT:
 		select {
 		case retval := <-retvalChan:
 			if retval == targetValue {
-				log.Println("returned value is correct!")
+				fmt.Println(" returned value is correct")
 				break OUT
 			} else {
-				log.Println("returned value is wrong.")
+				fmt.Println(" returned value is wrong")
 				continue OUT
 			}
-		case <-time.After(1 * time.Second):
+		case <-time.After(500 * time.Millisecond):
 			fmt.Println("timeout")
 			continue OUT
 		}
@@ -94,6 +107,5 @@ OUT:
 func main() {
 	fmt.Printf("Looking for 6 bytes of machine code that returns 42.\n\n")
 	code := findCode(6, 42)
-	fmt.Println("Success! Found machine code that returns 42:")
-	fmt.Println(hexstring.BytesToString(code))
+	fmt.Printf("Success!\nFound machine code:\n%s\n", hexstring.BytesToString(code))
 }
