@@ -4,6 +4,8 @@
 
 It was inspired by this post: [Hello, JIT World: The Joy of Simple JITs](http://blog.reverberate.org/2012/12/hello-jit-world-joy-of-simple-jits.html).
 
+`jit` is also an extremely simple programming language.
+
 ## Example usage
 
 ```go
@@ -13,24 +15,13 @@ jit.Execute(code)
 
 ## The `jitrun` command
 
-`jit` includes a small machine code execution program nameed `jitrun` that can be installed with:
+`jit` includes a small machine code execution program named `jitrun` that can be installed with Go 1.17 or later:
 
 ```bash
-go get -u github.com/xyproto/jit/cmd/jitrun
+go install github.com/xyproto/jit/cmd/jitrun@latest
 ```
 
-Example use of `jitrun`:
-
-    $ echo 'b8 2a 00 00 00 c3' | jitrun -
-    Stripped source code:
-    b8 2a 00 00 00 c3
-
-    Source bytes:
-    [184 42 0 0 0 195]
-
-    The program returned: 42
-
-Alternatively, provide a file, and run it:
+You can provide a file, and run it:
 
 *`42.mc`*:
 
@@ -42,18 +33,30 @@ b8 2a   // mov 2a into the ax register. b8 is the "mov ax" part. 2a is the value
 
     ./jitrun 42.mc
 
-`jitrun` can also be run silently by using the `-s` flag:
+`jitrun` can be run silently with the `-s` flag:
 
     $ echo 'b8 2a 00 00 00 c3' | jitrun -s -
-    $ echo $?
+    $ echo $?
     42
+
+It's also possible to pipe the machine code directly to `jitrun`:
+
+    $ echo 'b8 2a 00 00 00 c3' | jitrun -
+    Stripped source code:
+    b8 2a 00 00 00 c3
+
+    Source bytes:
+    [184 42 0 0 0 195]
+
+    The program returned: 42
 
 ## Dependencies
 
-The only dependencies are `cgo` (for the `jit` package) and the [`hexstring`](https://github.com/xyproto/hexstring) module (only for the `jitrun` command).
+* `cgo` for the `jit` package.
+* The [`hexstring`](https://github.com/xyproto/hexstring) module for the `jitrun` command.
 
 ## General info
 
-* License: MIT
+* License: BSD-3
 * Version: 1.0.0
 * Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
