@@ -33,13 +33,7 @@ b8 2a   // mov 2a into the ax register. b8 is the "mov ax" part. 2a is the value
 
     ./jitrun 42.mc
 
-`jitrun` can be run silently with the `-s` flag:
-
-    $ echo 'b8 2a 00 00 00 c3' | jitrun -s -
-    $ echo $?
-    42
-
-It's also possible to pipe the machine code directly to `jitrun`:
+It's possible to pipe the machine code directly to `jitrun`:
 
     $ echo 'b8 2a 00 00 00 c3' | jitrun -
     Stripped source code:
@@ -49,6 +43,12 @@ It's also possible to pipe the machine code directly to `jitrun`:
     [184 42 0 0 0 195]
 
     The program returned: 42
+
+`jitrun` can be run silently with the `-s` flag:
+
+    $ echo 'b8 2a 00 00 00 c3' | jitrun -s -
+    $ echo $?
+    42
 
 ## Dependencies
 
