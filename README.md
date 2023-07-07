@@ -1,4 +1,4 @@
-# jit [![Build Status](https://travis-ci.org/xyproto/jit.svg?branch=master)](https://travis-ci.org/xyproto/jit) [![GoDoc](https://godoc.org/github.com/xyproto/jit?status.svg)](https://godoc.org/github.com/xyproto/jit) [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/xyproto/jit/master/LICENSE) [![Go Report Card](https://goreportcard.com/badge/github.com/xyproto/jit)](https://goreportcard.com/report/github.com/xyproto/jit)
+# [License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/xyproto/jit/master/LICENSE) [![Go Report Card](https://goreportcard.com/badge/github.com/xyproto/jit)](https://goreportcard.com/report/github.com/xyproto/jit)
 
 `jit` is a Go module for executing machine code instructions directly, without having to store instructions in an executable file.
 
