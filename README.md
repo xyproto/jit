@@ -26,9 +26,10 @@ You can provide a file, and run it:
 *`42.mc`*:
 
 ```
-b8 2a   // mov 2a into the ax register. b8 is the "mov ax" part. 2a is the value.
-00 00
-00 c3   // return the value in ax
+// This program moves 42 into eax and returns
+
+b8 2a 00 00 00  // mov x2a000000 into the eax register. b8 is the "mov eax" part. 0x2a is 42.
+c3              // return to the caller (the return value is held in eax)
 ```
 
     ./jitrun 42.mc
@@ -49,6 +50,18 @@ It's possible to pipe the machine code directly to `jitrun`:
     $ echo 'b8 2a 00 00 00 c3' | jitrun -s -
     $ echo $?
     42
+
+Here is another example program:
+
+```
+// This program takes the square root of 1024 and returns the answer (in eax), which is 32
+
+b8 00 04 00 00  // mov 1024 (0x400) into eax
+f3 0f 2a c0     // mov eax into the xmm0 register
+f3 0f 51 c0     // take the square root of the xmm0 register and place it into xmm0
+f3 0f 2c c0     // move xmm0 back into eax
+c3              // return to the caller (the return value is held in eax)
+```
 
 ## Dependencies
 
