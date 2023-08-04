@@ -28,7 +28,7 @@ You can provide a file, and run it:
 ```
 // This program moves 42 into eax and returns
 
-b8 2a 00 00 00  // mov x2a000000 into the eax register. b8 is the "mov eax" part. 0x2a is 42.
+b8 2a 00 00 00  // mov 2a000000 into the eax register. b8 is the "mov eax" part. 0x2a is 42.
 c3              // return to the caller (the return value is held in eax)
 ```
 
