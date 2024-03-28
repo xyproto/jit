@@ -6,6 +6,8 @@ It was inspired by this post: [Hello, JIT World: The Joy of Simple JITs](http://
 
 `jit` is also an extremely simple programming language.
 
+For a similar project written in Rust, check out [machinecode](https://github.com/xyproto/machinecode).
+
 ## Example usage
 
 ```go
