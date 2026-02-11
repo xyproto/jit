@@ -76,14 +76,14 @@ func main() {
 	}
 
 	jit := jit.Jit[int64, int64]{}
+	defer jit.Destroy()
+
 	function, err := jit.NewFunc(code)
 	if err != nil {
 		panic(err)
 	}
 
 	ret := function(0)
-
-	jit.Destroy()
 
 	if verbose {
 		fmt.Printf("The program returned: %d\n", ret)
