@@ -11,9 +11,13 @@ import (
 	"github.com/xyproto/jit"
 )
 
+const versionString = "jitrun 1.0.1"
+
 func usageExit() {
-	fmt.Fprintln(os.Stderr, "Please provide the filename of a hex encoded machine code program as the first argument.")
-	fmt.Fprintln(os.Stderr, "Use -s to silence the output and only set the exit code to the return code of the program.")
+	fmt.Fprintln(os.Stderr, versionString+`
+
+Please provide the filename of a hex encoded machine code program as the first argument.
+Use -s to silence the output and only set the exit code to the return code of the program.`)
 	os.Exit(1)
 }
 
