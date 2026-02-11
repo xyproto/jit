@@ -73,5 +73,4 @@ c3              // return to the caller (the return value is held in eax)
 ## General info
 
 * License: BSD-3
-* Version: 1.0.0
-* Author: Alexander F. Rødseth &lt;xyproto@archlinux.org&gt;
+* Version: 1.0.1
