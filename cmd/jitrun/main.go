@@ -4,7 +4,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -25,7 +24,6 @@ func main() {
 	filename := os.Args[1]
 	verbose := true
 
-	// Silent flag?
 	if os.Args[1] == "-s" || os.Args[1] == "--silent" {
 		if len(os.Args) < 3 {
 			usageExit()
@@ -38,8 +36,7 @@ func main() {
 		filename = os.Stdin.Name()
 	}
 
-	// Read the source file
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		panic(err)
 	}
@@ -78,14 +75,19 @@ func main() {
 		fmt.Printf("Source bytes:\n%v\n\n", code)
 	}
 
-	retval, err := jit.Execute(code)
+	jit := jit.Jit[int64, int64]{}
+	function, err := jit.NewFunc(code)
 	if err != nil {
 		panic(err)
 	}
 
+	ret := function(0)
+
+	jit.Destroy()
+
 	if verbose {
-		fmt.Printf("The program returned: %d\n", retval)
+		fmt.Printf("The program returned: %d\n", ret)
 	} else {
-		os.Exit(retval)
+		os.Exit(int(ret))
 	}
 }

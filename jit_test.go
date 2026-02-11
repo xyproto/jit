@@ -1,33 +1,30 @@
 package jit
 
 import (
+	"runtime"
 	"testing"
-
-	"github.com/xyproto/hexstring"
 )
 
-func TestExecution(t *testing.T) {
-	machineCodeProgram := `
-b8 00
-00 00
-00 c3
-`
+func TestSquare(t *testing.T) {
+	if runtime.GOARCH != "amd64" {
+		t.Skip("amd64 only")
+	}
+	code := []byte{
+		0x48, 0x89, 0xF8, // mov rax, rdi
+		0x48, 0x0F, 0xAF, 0xC0, // imul rax, rax
+		0xC3, // ret
+	}
 
-	code, err := hexstring.StringToBytes(machineCodeProgram)
+	j := Jit[int32, int32]{}
+	function, err := j.NewFunc(code)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("jit failed: %v", err)
 	}
 
-	// Change eax in the above program to be set to a value
-	num := 21
-	code[1] = uint8(num)
-
-	retval, err := Execute(code)
-	if err != nil {
-		t.Fatal(err)
+	expected := int32(64 * 64)
+	got := function(64)
+	if got != expected {
+		t.Fatalf("got(%v) != expected(%v)", got, expected)
 	}
-
-	if retval != num {
-		t.Fatalf("The wrong value was returned: %d != %d\n", retval, num)
-	}
+	j.Destroy()
 }
