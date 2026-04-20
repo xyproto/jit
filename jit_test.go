@@ -9,6 +9,7 @@ func TestSquare(t *testing.T) {
 	if runtime.GOARCH != "amd64" {
 		t.Skip("amd64 only")
 	}
+
 	code := []byte{
 		// mov rax, rdi
 		0x48, 0x89, 0xF8,
@@ -23,11 +24,11 @@ func TestSquare(t *testing.T) {
 	if err != nil {
 		t.Fatalf("jit failed: %v", err)
 	}
+	defer j.Destroy()
 
 	expected := int32(64 * 64)
 	got := function(64)
 	if got != expected {
 		t.Fatalf("got(%v) != expected(%v)", got, expected)
 	}
-	j.Destroy()
 }
