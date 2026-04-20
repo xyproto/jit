@@ -7,7 +7,7 @@ package jit
 
 // uint64_t because all our types in RegisterType fit in a register
 uint64_t trampoline(void* fptr, uint64_t arg) {
-    int (*f)(int) = fptr;
+    uint64_t (*f)(uint64_t) = fptr;
     return f(arg);
 }
 */

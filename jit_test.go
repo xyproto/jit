@@ -10,9 +10,12 @@ func TestSquare(t *testing.T) {
 		t.Skip("amd64 only")
 	}
 	code := []byte{
-		0x48, 0x89, 0xF8, // mov rax, rdi
-		0x48, 0x0F, 0xAF, 0xC0, // imul rax, rax
-		0xC3, // ret
+		// mov rax, rdi
+		0x48, 0x89, 0xF8,
+		// imul rax, rax
+		0x48, 0x0F, 0xAF, 0xC0,
+		// ret
+		0xC3,
 	}
 
 	j := Jit[int32, int32]{}
